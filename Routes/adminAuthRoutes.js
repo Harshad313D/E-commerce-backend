@@ -1,9 +1,10 @@
 import express from "express";
-import {
+import { loginAdmin, registerAdmin } from "../controllers/adminController.js";
+// import {
 
-  registerAdmin,
-  loginAdmin,
-} from "../controllers/adminController.js";
+//   registerAdmin,
+//   loginAdmin,
+// } from "../controllers/adminController.js";
 
 const router = express.Router();
 
