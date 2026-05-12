@@ -10,6 +10,9 @@ import userRoutes from "./Routes/User/userAuthRoutes.js"
 import userMngRoutes from "./Routes/userRoutes.js"
 import adminProducts from "./Routes/admin-productRoutes.js"
 
+import userCartRotues from "./Routes/User/userCartRoutes.js"
+import userOrderRotues from "./Routes/User/userOrderRoutes.js"
+
 dotenv.config();
 connectDB();
 
@@ -29,8 +32,13 @@ app.use(express.json());
 // admin routes
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/admin/users", userMngRoutes);
-app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/products", adminProducts);
+
+// user routes
+app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/user/cart", userCartRotues);
+app.use("/api/v1/user/order", userOrderRotues);
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

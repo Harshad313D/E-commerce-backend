@@ -1,6 +1,6 @@
 import express from "express";
 import { loginUser, registerUser } from "../../Controllers/User/userAuthController.js";
-import { getAllProducts } from "../../Controllers/productController.js";
+import { getAllProducts, getProductById } from "../../Controllers/productController.js";
 
 const router = express.Router();
 
@@ -8,7 +8,7 @@ const router = express.Router();
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 
-router.get("/get/all-products",getAllProducts)
-
+router.get("/products",getAllProducts)
+router.get("/products/:id",getProductById)
 
 export default router;
