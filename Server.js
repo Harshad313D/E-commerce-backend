@@ -12,6 +12,7 @@ import adminProducts from "./Routes/admin-productRoutes.js"
 
 import userCartRotues from "./Routes/User/userCartRoutes.js"
 import userOrderRotues from "./Routes/User/userOrderRoutes.js"
+import adminOrderMng from "./Routes/adminOrderRoutes.js"
 
 dotenv.config();
 connectDB();
@@ -33,6 +34,7 @@ app.use(express.json());
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/admin/users", userMngRoutes);
 app.use("/api/v1/products", adminProducts);
+app.use("/api/v1/admin/order", adminOrderMng);
 
 // user routes
 app.use("/api/v1/user", userRoutes);
