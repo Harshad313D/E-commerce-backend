@@ -25,6 +25,9 @@ app.use(
       "http://localhost:5173",
       "https://beauty-product-j8be.onrender.com",
       "https://beauty-products-sp29.onrender.com",
+
+      // prtik admin
+      "https://admin-panel-uw5q.onrender.com",
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
