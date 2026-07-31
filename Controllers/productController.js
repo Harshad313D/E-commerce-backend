@@ -45,7 +45,66 @@ export const getAllProducts = async (req, res) => {
       .json({ message: "Failed to fetch products", error: error.message });
   }
 };
+// Get all products (With Pagination, Filtering, and Search)
+// export const getAllProducts = async (req, res) => {
+//   try {
+//     let page = Number(req.query.page) || 1;
+//     let limit = Number(req.query.limit) || 10;
 
+//     if (page < 1) page = 1;
+//     if (limit < 1) limit = 10;
+
+//     const skip = (page - 1) * limit;
+
+//     // --- BUILDING THE FILTER OBJECT ---
+//     const filter = {};
+
+//     // 1. Filter by Category (Exact match)
+//     if (req.query.category) {
+//       filter.category = req.query.category;
+//     }
+
+//     // 2. Search by Name (Partial, case-insensitive match)
+//     if (req.query.search) {
+//       filter.name = { 
+//         $regex: req.query.search, // Matches partial words (e.g., "face" finds "facewash")
+//         $options: "i"             // "i" means case-insensitive ("Face" == "face")
+//       };
+//     }
+//     // ----------------------------------
+
+//     const [products, totalProducts] = await Promise.all([
+//       Product.find(filter)
+//         .sort({ createdAt: -1 })
+//         .skip(skip)
+//         .limit(limit),
+      
+//       Product.countDocuments(filter)
+//     ]);
+
+//     const totalPages = Math.ceil(totalProducts / limit);
+
+//     res.status(200).json({
+//       success: true,
+//       message: "Products fetched successfully",
+//       metadata: {
+//         totalProducts,
+//         totalPages,
+//         currentPage: page,
+//         limit,
+//         hasNextPage: page < totalPages,
+//         hasPrevPage: page > 1
+//       },
+//       products, 
+//     });
+//   } catch (error) {
+//     res.status(500).json({ 
+//       success: false, 
+//       message: "Failed to fetch products", 
+//       error: error.message 
+//     });
+//   }
+// };
 // Get a single product by ID
 export const getProductById = async (req, res) => {
   try {

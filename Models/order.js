@@ -1,5 +1,14 @@
 import mongoose from "mongoose";
 
+// Sub-schema to track every individual payment attempt
+const paymentAttemptSchema = new mongoose.Schema({
+  idempotencyKey: { type: String, required: true },
+  razorpayPaymentId: { type: String },
+  status: { type: String, enum: ["SUCCESS", "FAILED"], required: true },
+  failureReason: { type: String },
+  attemptedAt: { type: Date, default: Date.now },
+});
+
 const orderSchema = new mongoose.Schema(
   {
     userId: {
@@ -21,6 +30,13 @@ const orderSchema = new mongoose.Schema(
     ],
     totalAmount: { type: Number, required: true },
     shippingAddress: { type: String, required: true },
+
+    // NEW FIELDS FOR RAZORPAY & RETRIES
+    razorpayOrderId: { type: String, required: true },
+    retryCount: { type: Number, default: 0 },
+    maxRetries: { type: Number, default: 2 }, // Maximum 2 retries (3 total attempts)
+    paymentAttempts: [paymentAttemptSchema],
+
     orderStatus: {
       type: String,
       enum: ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"],
@@ -28,11 +44,11 @@ const orderSchema = new mongoose.Schema(
     },
     paymentStatus: {
       type: String,
-      enum: ["Pending", "Completed", "Failed"],
+      enum: ["Pending", "Completed", "Failed", "Exhausted_Retries"],
       default: "Pending",
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 const Order = mongoose.model("Order", orderSchema);

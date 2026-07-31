@@ -29,3 +29,12 @@ const cartSchema = new mongoose.Schema(
 
 const Cart = mongoose.model("Cart", cartSchema);
 export default Cart;
+
+
+// userId
+// items :[
+//   {
+//     productid:"3456346346346346"
+//     qt:2
+//   }
+// ]
