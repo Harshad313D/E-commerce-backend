@@ -3,7 +3,8 @@ import Product from "../Models/product.js"; // Make sure the path matches your P
 // Add a new product
 export const createProduct = async (req, res) => {
   try {
-    const { name, description, price, category, stock, imageUrl } = req.body;
+    const { name, artisan, description, price, category, stock, imageUrl } =
+      req.body;
 
     const product = new Product({
       name,
@@ -12,6 +13,7 @@ export const createProduct = async (req, res) => {
       category,
       stock,
       imageUrl,
+      artisan,
     });
 
     await product.save();
