@@ -7,7 +7,8 @@ export const getCart = async (req, res) => {
     const { userId } = req.params;
 
     // .populate() pulls in the actual product details, not just the ID
-    const cart = await Cart.findOne({ userId }).populate(
+    const cart = await Cart.findOne({ userId })
+    .populate(
       "items.productId",
       "name price imageUrl stock",
     );
@@ -17,6 +18,7 @@ export const getCart = async (req, res) => {
     }
 
     res.status(200).json(cart);
+
   } catch (error) {
     res
       .status(500)
@@ -31,7 +33,9 @@ export const addToCart = async (req, res) => {
 
     // Check if product exists and has stock
     const product = await Product.findById(productId);
+
     if (!product) return res.status(404).json({ message: "Product not found" });
+    
     if (product.stock < quantity)
       return res.status(400).json({ message: "Not enough stock" });
 
@@ -39,10 +43,12 @@ export const addToCart = async (req, res) => {
 
     if (!cart) {
       // Create new cart if user doesn't have one
+
       cart = new Cart({
         userId,
         items: [{ productId, quantity }],
       });
+
     } else {
       // Check if product already exists in cart
       const itemIndex = cart.items.findIndex(
@@ -66,6 +72,7 @@ export const addToCart = async (req, res) => {
       "name price imageUrl",
     );
     res.status(200).json({ message: "Added to cart", cart: updatedCart });
+    
   } catch (error) {
     res
       .status(500)
@@ -84,9 +91,11 @@ export const removeFromCart = async (req, res) => {
     cart.items = cart.items.filter(
       (item) => item.productId.toString() !== productId,
     );
+
     await cart.save();
 
     res.status(200).json({ message: "Item removed from cart", cart });
+    
   } catch (error) {
     res
       .status(500)
@@ -134,6 +143,7 @@ export const updateCartItemQuantity = async (req, res) => {
     } else {
       return res.status(400).json({ message: "Invalid action. Use 'increase' or 'decrease'." });
     }
+
 
     // 4. Save and return updated cart
     await cart.save();
