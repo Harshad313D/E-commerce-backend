@@ -28,7 +28,7 @@ app.use(
       "https://beauty-product-j8be.onrender.com",
       "https://beauty-products-sp29.onrender.com",
 
-      "https://artisans-nsx8.onrender.com"
+      "https://artisans-nsx8.onrender.com",
       // prtik admin
       "https://admin-panel-uw5q.onrender.com",
     ],
