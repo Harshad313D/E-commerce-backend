@@ -1,6 +1,114 @@
+// import Cart from "../../Models/cart.js";
+
+
+// // 1. Checkout (Convert Cart directly to an Order)
+// export const createOrder = async (req, res) => {
+//   try {
+//     const { userId, shippingAddress } = req.body;
+
+//     // Fetch the user's cart
+//     const cart = await Cart.findOne({ userId }).populate("items.productId");
+//     if (!cart || cart.items.length === 0) {
+//       return res.status(400).json({ message: "Your cart is empty" });
+//     }
+
+//     // user id product id 
+
+//     let totalAmount = 0;
+//     const orderItems = [];
+
+//     // Step A: Check stock and calculate total amount
+//     for (const item of cart.items) {
+//       const product = item.productId;
+
+//       if (product.stock < item.quantity) {
+//         return res
+//           .status(400)
+//           .json({ message: `Insufficient stock for ${product.name}` });
+//       }
+
+//       orderItems.push({
+//         productId: product._id,
+//         name: product.name,
+//         quantity: item.quantity,
+//         price: product.price,
+//       });
+
+//       totalAmount += product.price * item.quantity;
+//     }
+
+//     // Step B: Deduct stock from products
+//     for (const item of cart.items) {
+//       const product = item.productId;
+
+//       product.stock -= item.quantity;
+      
+//       await product.save();
+//     }
+
+//     // Step C: Create the order in the Database
+//     const order = new Order({
+//       userId,
+//       items: orderItems,
+//       totalAmount,
+//       shippingAddress,
+//       paymentStatus: "Completed", // Hardcoded for simplicity
+//       orderStatus: "Processing",
+//     });
+
+//     await order.save();
+
+//     // Step D: Clear the cart now that the order is placed
+//     await Cart.findOneAndDelete({ userId });
+
+//     res.status(201).json({
+//       message: "Order placed successfully!",
+//       orderId: order._id,
+//       totalAmount,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       message: "Failed to place order",
+//       error: error.message,
+//     });
+//   }
+// };
+
+// // 2. Get logged-in user's orders
+// export const getUserOrders = async (req, res) => {
+//   try {
+//     const { userId } = req.params;
+//     // Sort by newest first
+//     const orders = await Order.find({ userId }).sort({ createdAt: -1 });
+//     res.status(200).json(orders);
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ message: "Failed to fetch orders", error: error.message });
+//   }
+// };
+
+// // 3. Get order by ID
+// export const getOrderById = async (req, res) => {
+//   try {
+//     const { orderId } = req.params;
+//     const order = await Order.findById(orderId);
+
+//     if (!order) {
+//       return res.status(404).json({ message: "Order not found" });
+//     }
+
+//     res.status(200).json(order);
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ message: "Failed to fetch order", error: error.message });
+//   }
+// };
+
 import Cart from "../../Models/cart.js";
 import Order from "../../Models/order.js";
-import Product from "../../Models/product.js"; 
+import Product from "../../Models/product.js";
 import razorpayInstance from "../../Config/razorpay.js";
 import crypto from "crypto";
 
@@ -76,7 +184,7 @@ export const createOrder = async (req, res) => {
     } else if (error.message && error.message.includes("Unauthorized")) {
       msg = "Razorpay Error: Invalid API Keys. Please put valid keys in .env!";
     }
-    
+
     res
       .status(500)
       .json({ message: msg, error: error.message || error });
